@@ -130,7 +130,12 @@ export function useInitializePollAndCandidates() {
       setIsPending(false);
       setIsInitialized(true);
     }
-  }, [initializePoll, initializeCandidates]);
+  }, [
+    initializePoll,
+    initializeCandidates,
+    invalidatePollQuery,
+    program.account.poll,
+  ]);
 
   return { initializePollAndCandidates, isPending, isInitialized };
 }
