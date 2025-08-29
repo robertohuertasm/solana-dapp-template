@@ -22,10 +22,11 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: install solana cli
+      - name: Install solana cli
         run: |
           sh -c "$(curl -sSfL https://release.anza.xyz/v3.0.0/install)"
           echo 'export PATH="$HOME/.local/share/solana/install/active_release/bin:$PATH"' >> $GITHUB_ENV
+          solana --version
 
       - name: Install Anchor
         run: |
