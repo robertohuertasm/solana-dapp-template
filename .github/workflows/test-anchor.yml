@@ -8,6 +8,8 @@ on:
 jobs:
   test-and-build:
     runs-on: ubuntu-latest
+    env:
+      SOLANA_BIN: $HOME/.local/share/solana/install/active_release/bin
 
     steps:
       - name: Checkout
@@ -19,17 +21,20 @@ jobs:
           path: |
             ~/.cache/solana/
             ~/.local/share/solana/
-          key: solana-cli-${{ runner.os }}-build-v3.0.0
+          key: solana-cli-v3.0.0
 
       - name: Install solana cli
         run: |
           sh -c "$(curl -sSfL https://release.anza.xyz/v3.0.0/install)"
-          echo 'export PATH="$HOME/.local/share/solana/install/active_release/bin:$PATH"' >> $GITHUB_PATH
-          export PATH="$HOME/.local/share/solana/install/active_release/bin:$PATH"
-          solana --version
+        shell: bash
+
+      - name: Update Path
+        run: echo "$SOLANA_BIN" >> $GITHUB_PATH
+        shell: bash
 
       - name: Generate new keypair
         run: solana-keygen new --no-bip39-passphrase
+        shell: bash
 
       - name: Install Node.js
         uses: actions/setup-node@v4
@@ -46,9 +51,11 @@ jobs:
 
       - name: Set solana target cluster to local
         run: solana config set --url http://localhost:8899
+        shell: bash
 
       - name: Check solana config
         run: solana config get
+        shell: bash
 
       - run: npm run anchor build
         shell: bash
