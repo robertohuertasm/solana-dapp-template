@@ -8,20 +8,10 @@ on:
 jobs:
   test-and-build:
     runs-on: ubuntu-latest
-    env:
-      SOLANA_BIN: $HOME/.local/share/solana/install/active_release/bin
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
-      - name: Cache Solana CLI tools
-        uses: actions/cache@v3
-        with:
-          path: |
-            ~/.cache/solana/
-            ~/.local/share/solana/
-          key: solana-cli-v3.0.0
 
       - name: Install solana cli
         run: |
@@ -29,7 +19,6 @@ jobs:
         shell: bash
 
       - name: Update Path
-        # run: echo "$SOLANA_BIN" >> $GITHUB_PATH
         run: echo "/home/runner/.local/share/solana/install/active_release/bin" >> $GITHUB_PATH
         shell: bash
 
