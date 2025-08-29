@@ -16,9 +16,12 @@ jobs:
       - name: Install solana cli
         run: |
           sh -c "$(curl -sSfL https://release.anza.xyz/v3.0.0/install)"
-          echo 'export PATH="$HOME/.local/share/solana/install/active_release/bin:$PATH"' >> $GITHUB_ENV
+          echo 'export PATH="$HOME/.local/share/solana/install/active_release/bin:$PATH"' >> $GITHUB_PATH
           export PATH="$HOME/.local/share/solana/install/active_release/bin:$PATH"
           solana --version
+
+      - name: Generate new keypair
+        run: solana-keygen new --no-bip39-passphrase
 
       - name: Install Node.js
         uses: actions/setup-node@v4
@@ -32,9 +35,6 @@ jobs:
       - name: Install Anchor
         run: |
           npm i -g @coral-xyz/anchor-cli@0.31.1
-
-      - name: Generate new keypair
-        run: solana-keygen new --no-bip39-passphrase
 
       - name: Set solana target cluster to local
         run: solana config set --url http://localhost:8899
