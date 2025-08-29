@@ -17,7 +17,7 @@ jobs:
         run: |
           sh -c "$(curl -sSfL https://release.anza.xyz/v3.0.0/install)"
           echo 'export PATH="$HOME/.local/share/solana/install/active_release/bin:$PATH"' >> "$GITHUB_PATH"
-          # export PATH="$HOME/.local/share/solana/install/active_release/bin:$PATH"
+          export PATH="$HOME/.local/share/solana/install/active_release/bin:$PATH"
           solana --version
 
       - name: Generate new keypair
