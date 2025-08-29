@@ -29,7 +29,8 @@ jobs:
         shell: bash
 
       - name: Update Path
-        run: echo "$SOLANA_BIN" >> $GITHUB_PATH
+        # run: echo "$SOLANA_BIN" >> $GITHUB_PATH
+        run: echo "/home/runner/.local/share/solana/install/active_release/bin" >> $GITHUB_PATH
         shell: bash
 
       - name: Generate new keypair
