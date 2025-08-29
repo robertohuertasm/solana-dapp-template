@@ -35,15 +35,9 @@ export function useVotingProgram() {
     [queryClient, cluster],
   );
 
-  const programId = useMemo(
-    () => getVotingProgramId(cluster.network as Cluster),
-    [cluster],
-  );
+  const programId = useMemo(() => getVotingProgramId(cluster.network as Cluster), [cluster]);
 
-  const program = useMemo(
-    () => getVotingProgram(provider, programId),
-    [provider, programId],
-  );
+  const program = useMemo(() => getVotingProgram(provider, programId), [provider, programId]);
 
   const polls = useQuery({
     queryKey: ['voting', 'all', { cluster }],
@@ -130,21 +124,12 @@ export function useInitializePollAndCandidates() {
       setIsPending(false);
       setIsInitialized(true);
     }
-  }, [
-    initializePoll,
-    initializeCandidates,
-    invalidatePollQuery,
-    program.account.poll,
-  ]);
+  }, [initializePoll, initializeCandidates, invalidatePollQuery, program.account.poll]);
 
   return { initializePollAndCandidates, isPending, isInitialized };
 }
 
-export function useVotingProgramAccount({
-  pollAddress,
-}: {
-  pollAddress: PublicKey;
-}) {
+export function useVotingProgramAccount({ pollAddress }: { pollAddress: PublicKey }) {
   const { cluster } = useCluster();
   const transactionToast = useTransactionToast();
   const { program } = useVotingProgram();
@@ -182,15 +167,7 @@ export function useVotingProgramAccount({
 
   const voteMutation = useMutation({
     mutationKey: ['voting', 'vote', { cluster, pollAddress }],
-    mutationFn: ({
-      name,
-      pollId,
-      candidateAddress,
-    }: {
-      name: string;
-      pollId: BN;
-      candidateAddress: PublicKey;
-    }) =>
+    mutationFn: ({ name, pollId, candidateAddress }: { name: string; pollId: BN; candidateAddress: PublicKey }) =>
       program.methods
         .vote(name, pollId)
         // the accounts are not needed but...

@@ -11,10 +11,7 @@ export { Voting, VotingIDL };
 export const VOTING_PROGRAM_ID = new PublicKey(VotingIDL.address);
 
 // This is a helper function to get the Counter Anchor program.
-export function getVotingProgram(
-  provider: AnchorProvider,
-  address?: PublicKey,
-) {
+export function getVotingProgram(provider: AnchorProvider, address?: PublicKey) {
   return new Program(
     {
       ...VotingIDL,
@@ -30,7 +27,7 @@ export function getVotingProgramId(cluster: Cluster) {
     case 'devnet':
     case 'testnet':
       // This is the program ID for the Counter program on devnet and testnet.
-      return new PublicKey('5fNNw9P8MT6krt49yN3vgPacpNvUGmmvNgLBPeTe5qeV');
+      return new PublicKey('HnjvW3NVDxwLecreArL8bsoY7GdbQ3R1BkbzXFp9VXB4');
     case 'mainnet-beta':
     default:
       return VOTING_PROGRAM_ID;

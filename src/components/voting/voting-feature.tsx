@@ -1,15 +1,15 @@
-'use client'
+'use client';
 
-import { useWallet } from '@solana/wallet-adapter-react'
-import { WalletButton } from '../solana/solana-provider'
-import { AppHero, ellipsify } from '../ui/ui-layout'
-import { ExplorerLink } from '../cluster/cluster-ui'
-import { useVotingProgram } from './voting-data-access'
-import { VotingCreate, VotingList } from './voting-ui'
+import { useWallet } from '@solana/wallet-adapter-react';
+import { WalletButton } from '../solana/solana-provider';
+import { AppHero, ellipsify } from '../ui/ui-layout';
+import { ExplorerLink } from '../cluster/cluster-ui';
+import { useVotingProgram } from './voting-data-access';
+import { VotingCreate, VotingList } from './voting-ui';
 
 export default function VotingFeature() {
-  const { publicKey } = useWallet()
-  const { programId } = useVotingProgram()
+  const { publicKey } = useWallet();
+  const { programId } = useVotingProgram();
 
   return publicKey ? (
     <div>
@@ -34,5 +34,5 @@ export default function VotingFeature() {
         </div>
       </div>
     </div>
-  )
+  );
 }

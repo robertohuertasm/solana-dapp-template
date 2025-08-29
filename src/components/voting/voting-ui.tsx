@@ -4,22 +4,14 @@ import { Keypair, PublicKey } from '@solana/web3.js';
 import { useMemo } from 'react';
 import { ellipsify } from '../ui/ui-layout';
 import { ExplorerLink } from '../cluster/cluster-ui';
-import {
-  useInitializePollAndCandidates,
-  useVotingProgram,
-  useVotingProgramAccount,
-} from './voting-data-access';
+import { useInitializePollAndCandidates, useVotingProgram, useVotingProgramAccount } from './voting-data-access';
 import { BN } from 'bn.js';
 
 export function VotingCreate() {
-  const { initializePollAndCandidates, isPending } =
-    useInitializePollAndCandidates();
+  const { initializePollAndCandidates, isPending } = useInitializePollAndCandidates();
 
   const { polls } = useVotingProgram();
-  const pollCount = useMemo(
-    () => polls.data?.length ?? 0,
-    [polls.data?.length],
-  );
+  const pollCount = useMemo(() => polls.data?.length ?? 0, [polls.data?.length]);
 
   return (
     <button
@@ -42,10 +34,7 @@ export function VotingList() {
   if (!programAccount.data?.value) {
     return (
       <div className="alert alert-info flex justify-center">
-        <span>
-          Program account not found. Make sure you have deployed the program and
-          are on the correct cluster.
-        </span>
+        <span>Program account not found. Make sure you have deployed the program and are on the correct cluster.</span>
       </div>
     );
   }
@@ -57,10 +46,7 @@ export function VotingList() {
       ) : polls.data?.length ? (
         <div className="grid md:grid-cols-1 gap-4">
           {polls.data?.map((poll) => (
-            <PollCard
-              key={poll.publicKey.toString()}
-              pollAddress={poll.publicKey}
-            />
+            <PollCard key={poll.publicKey.toString()} pollAddress={poll.publicKey} />
           ))}
         </div>
       ) : (
@@ -84,9 +70,7 @@ function PollCard({ pollAddress }: { pollAddress: PublicKey }) {
   );
 
   const description = useMemo(
-    () =>
-      pollQuery.data?.poll.description ??
-      'The description of the poll has not been set',
+    () => pollQuery.data?.poll.description ?? 'The description of the poll has not been set',
     [pollQuery.data?.poll.description],
   );
 
@@ -96,10 +80,7 @@ function PollCard({ pollAddress }: { pollAddress: PublicKey }) {
     <div className="card card-bordered border-base-300 border-4 text-neutral-content">
       <div className="card-body items-center text-center">
         <div className="space-y-6">
-          <h2
-            className="card-title justify-center text-3xl cursor-pointer"
-            onClick={() => pollQuery.refetch()}
-          >
+          <h2 className="card-title justify-center text-3xl cursor-pointer" onClick={() => pollQuery.refetch()}>
             {description}
           </h2>
           <div className="flex justify-center">
@@ -113,8 +94,7 @@ function PollCard({ pollAddress }: { pollAddress: PublicKey }) {
             {pollQuery.data?.candidates.map((candidate) => (
               <div key={candidate.account.candidateName}>
                 <p>
-                  {candidate.account.candidateName}:{' '}
-                  {candidate.account.candidateVotes.toNumber()}
+                  {candidate.account.candidateName}: {candidate.account.candidateVotes.toNumber()}
                 </p>
                 <button
                   className="btn btn-xs lg:btn-md btn-outline"
@@ -134,10 +114,7 @@ function PollCard({ pollAddress }: { pollAddress: PublicKey }) {
           </div>
           <div className="text-center space-y-4 pt-10">
             <p>
-              <ExplorerLink
-                path={`account/${pollAddress}`}
-                label={ellipsify(pollAddress.toString())}
-              />
+              <ExplorerLink path={`account/${pollAddress}`} label={ellipsify(pollAddress.toString())} />
             </p>
           </div>
         </div>

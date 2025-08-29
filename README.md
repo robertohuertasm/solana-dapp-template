@@ -11,13 +11,12 @@ It's a template for Solana dApps based on [solana-developers/template-next-tailw
 - Adds a `blink` to the API.
 - Voting app with JS and Rust tests.
 
-
 ### Prerequisites
 
-- Node v18.18.0 or higher
-- Rust v1.77.2 or higher
+- Node v22 or higher
+- Rust v1.89.0 or higher
 - Anchor CLI 0.31.1 or higher
-- Solana CLI 1.18.17 or higher
+- Solana CLI 3.0.0 or higher
 
 ### Installation
 
@@ -78,6 +77,8 @@ npm run anchor-build
 npm run anchor-localnet
 ```
 
+If you want to use your local validator, you'll need to deploy the contract: `npm run anchor deploy`.
+
 #### Run the tests
 
 ```shell
@@ -114,4 +115,4 @@ There's a blink in the `api > vote > routes.ts` file.
 
 ## Tests
 
-We have banrun tests, normal tests, and Rust tests (`npm run test-rust`)
+We have bankrun tests, normal tests, and Rust tests (`npm run test-rust`)

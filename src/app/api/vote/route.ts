@@ -1,9 +1,4 @@
-import {
-  ActionGetResponse,
-  ActionPostRequest,
-  ACTIONS_CORS_HEADERS,
-  createPostResponse,
-} from '@solana/actions';
+import { ActionGetResponse, ActionPostRequest, ACTIONS_CORS_HEADERS, createPostResponse } from '@solana/actions';
 import { Connection, PublicKey, Transaction } from '@solana/web3.js';
 import { Voting } from '@/../anchor/target/types/voting';
 import { BN, Program } from '@coral-xyz/anchor';
@@ -42,10 +37,7 @@ export async function POST(request: Request) {
   const candidate = url.searchParams.get('candidate');
 
   if (candidate !== 'red' && candidate !== 'green') {
-    return Response.json(
-      { error: 'No candidate provided' },
-      { status: 400, headers: ACTIONS_CORS_HEADERS },
-    );
+    return Response.json({ error: 'No candidate provided' }, { status: 400, headers: ACTIONS_CORS_HEADERS });
   }
 
   const body: ActionPostRequest = await request.json();

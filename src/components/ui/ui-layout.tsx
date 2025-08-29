@@ -7,20 +7,10 @@ import { ReactNode, Suspense, useEffect, useRef } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 
 import { AccountChecker } from '../account/account-ui';
-import {
-  ClusterChecker,
-  ClusterUiSelect,
-  ExplorerLink,
-} from '../cluster/cluster-ui';
+import { ClusterChecker, ClusterUiSelect, ExplorerLink } from '../cluster/cluster-ui';
 import { WalletButton } from '../solana/solana-provider';
 
-export function UiLayout({
-  children,
-  links,
-}: {
-  children: ReactNode;
-  links: { label: string; path: string }[];
-}) {
+export function UiLayout({ children, links }: { children: ReactNode; links: { label: string; path: string }[] }) {
   const pathname = usePathname();
 
   return (
@@ -33,10 +23,7 @@ export function UiLayout({
           <ul className="menu menu-horizontal px-1 space-x-2">
             {links.map(({ label, path }) => (
               <li key={path}>
-                <Link
-                  className={pathname.startsWith(path) ? 'active' : ''}
-                  href={path}
-                >
+                <Link className={pathname.startsWith(path) ? 'active' : ''} href={path}>
                   {label}
                 </Link>
               </li>
@@ -118,11 +105,7 @@ export function AppModal({
         <div className="modal-action">
           <div className="join space-x-2">
             {submit ? (
-              <button
-                className="btn btn-xs lg:btn-md btn-primary"
-                onClick={submit}
-                disabled={submitDisabled}
-              >
+              <button className="btn btn-xs lg:btn-md btn-primary" onClick={submit} disabled={submitDisabled}>
                 {submitLabel || 'Save'}
               </button>
             ) : null}
@@ -149,16 +132,8 @@ export function AppHero({
     <div className="hero py-[64px]">
       <div className="hero-content text-center">
         <div className="max-w-2xl">
-          {typeof title === 'string' ? (
-            <h1 className="text-5xl font-bold">{title}</h1>
-          ) : (
-            title
-          )}
-          {typeof subtitle === 'string' ? (
-            <p className="py-6">{subtitle}</p>
-          ) : (
-            subtitle
-          )}
+          {typeof title === 'string' ? <h1 className="text-5xl font-bold">{title}</h1> : title}
+          {typeof subtitle === 'string' ? <p className="py-6">{subtitle}</p> : subtitle}
           {children}
         </div>
       </div>
@@ -168,9 +143,7 @@ export function AppHero({
 
 export function ellipsify(str = '', len = 4) {
   if (str.length > 30) {
-    return (
-      str.substring(0, len) + '..' + str.substring(str.length - len, str.length)
-    );
+    return str.substring(0, len) + '..' + str.substring(str.length - len, str.length);
   }
   return str;
 }
@@ -180,11 +153,7 @@ export function useTransactionToast() {
     toast.success(
       <div className={'text-center'}>
         <div className="text-lg">Transaction sent</div>
-        <ExplorerLink
-          path={`tx/${signature}`}
-          label={'View Transaction'}
-          className="btn btn-xs btn-primary"
-        />
+        <ExplorerLink path={`tx/${signature}`} label={'View Transaction'} className="btn btn-xs btn-primary" />
       </div>,
     );
   };
