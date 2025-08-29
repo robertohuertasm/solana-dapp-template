@@ -13,10 +13,18 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Cache Solana CLI tools
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cache/solana/
+            ~/.local/share/solana/
+          key: solana-cli-${{ runner.os }}-build-v3.0.0
+
       - name: Install solana cli
         run: |
           sh -c "$(curl -sSfL https://release.anza.xyz/v3.0.0/install)"
-          echo 'export PATH="$HOME/.local/share/solana/install/active_release/bin:$PATH"' >> "$GITHUB_PATH"
+          echo 'export PATH="$HOME/.local/share/solana/install/active_release/bin:$PATH"' >> $GITHUB_PATH
           export PATH="$HOME/.local/share/solana/install/active_release/bin:$PATH"
           solana --version
 
