@@ -22,11 +22,14 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - uses: metadaoproject/setup-anchor@v3
-        with:
-          anchor-version: '0.31.1'
-          node-version: '22'
-          solana-cli-version: '3.0.0'
+      - name: install solana cli
+        run: |
+          sh -c "$(curl -sSfL https://release.anza.xyz/v3.0.0/install)"
+          echo 'export PATH="$HOME/.local/share/solana/install/active_release/bin:$PATH"' >> $GITHUB_ENV
+
+      - name: Install Anchor
+        run: |
+          npm i -g @coral-xyz/anchor-cli@0.31.1
 
       - name: Generate new keypair
         run: solana-keygen new --no-bip39-passphrase
