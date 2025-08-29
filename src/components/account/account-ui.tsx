@@ -1,23 +1,23 @@
-'use client'
+'use client';
 
-import { useWallet } from '@solana/wallet-adapter-react'
-import { LAMPORTS_PER_SOL, PublicKey } from '@solana/web3.js'
-import { IconRefresh } from '@tabler/icons-react'
-import { useQueryClient } from '@tanstack/react-query'
-import { useMemo, useState } from 'react'
-import { AppModal, ellipsify } from '../ui/ui-layout'
-import { useCluster } from '../cluster/cluster-data-access'
-import { ExplorerLink } from '../cluster/cluster-ui'
+import { useWallet } from '@solana/wallet-adapter-react';
+import { LAMPORTS_PER_SOL, PublicKey } from '@solana/web3.js';
+import { IconRefresh } from '@tabler/icons-react';
+import { useQueryClient } from '@tanstack/react-query';
+import { useMemo, useState } from 'react';
+import { AppModal, ellipsify } from '../ui/ui-layout';
+import { useCluster } from '../cluster/cluster-data-access';
+import { ExplorerLink } from '../cluster/cluster-ui';
 import {
   useGetBalance,
   useGetSignatures,
   useGetTokenAccounts,
   useRequestAirdrop,
   useTransferSol,
-} from './account-data-access'
+} from './account-data-access';
 
 export function AccountBalance({ address }: { address: PublicKey }) {
-  const query = useGetBalance({ address })
+  const query = useGetBalance({ address });
 
   return (
     <div>
@@ -25,22 +25,22 @@ export function AccountBalance({ address }: { address: PublicKey }) {
         {query.data ? <BalanceSol balance={query.data} /> : '...'} SOL
       </h1>
     </div>
-  )
+  );
 }
 export function AccountChecker() {
-  const { publicKey } = useWallet()
+  const { publicKey } = useWallet();
   if (!publicKey) {
-    return null
+    return null;
   }
-  return <AccountBalanceCheck address={publicKey} />
+  return <AccountBalanceCheck address={publicKey} />;
 }
 export function AccountBalanceCheck({ address }: { address: PublicKey }) {
-  const { cluster } = useCluster()
-  const mutation = useRequestAirdrop({ address })
-  const query = useGetBalance({ address })
+  const { cluster } = useCluster();
+  const mutation = useRequestAirdrop({ address });
+  const query = useGetBalance({ address });
 
   if (query.isLoading) {
-    return null
+    return null;
   }
   if (query.isError || !query.data) {
     return (
@@ -55,17 +55,17 @@ export function AccountBalanceCheck({ address }: { address: PublicKey }) {
           Request Airdrop
         </button>
       </div>
-    )
+    );
   }
-  return null
+  return null;
 }
 
 export function AccountButtons({ address }: { address: PublicKey }) {
-  const wallet = useWallet()
-  const { cluster } = useCluster()
-  const [showAirdropModal, setShowAirdropModal] = useState(false)
-  const [showReceiveModal, setShowReceiveModal] = useState(false)
-  const [showSendModal, setShowSendModal] = useState(false)
+  const wallet = useWallet();
+  const { cluster } = useCluster();
+  const [showAirdropModal, setShowAirdropModal] = useState(false);
+  const [showReceiveModal, setShowReceiveModal] = useState(false);
+  const [showSendModal, setShowSendModal] = useState(false);
 
   return (
     <div>
@@ -92,17 +92,17 @@ export function AccountButtons({ address }: { address: PublicKey }) {
         </button>
       </div>
     </div>
-  )
+  );
 }
 
 export function AccountTokens({ address }: { address: PublicKey }) {
-  const [showAll, setShowAll] = useState(false)
-  const query = useGetTokenAccounts({ address })
-  const client = useQueryClient()
+  const [showAll, setShowAll] = useState(false);
+  const query = useGetTokenAccounts({ address });
+  const client = useQueryClient();
   const items = useMemo(() => {
-    if (showAll) return query.data
-    return query.data?.slice(0, 5)
-  }, [query.data, showAll])
+    if (showAll) return query.data;
+    return query.data?.slice(0, 5);
+  }, [query.data, showAll]);
 
   return (
     <div className="space-y-2">
@@ -116,10 +116,10 @@ export function AccountTokens({ address }: { address: PublicKey }) {
               <button
                 className="btn btn-sm btn-outline"
                 onClick={async () => {
-                  await query.refetch()
+                  await query.refetch();
                   await client.invalidateQueries({
                     queryKey: ['getTokenAccountBalance'],
-                  })
+                  });
                 }}
               >
                 <IconRefresh size={16} />
@@ -183,17 +183,17 @@ export function AccountTokens({ address }: { address: PublicKey }) {
         </div>
       )}
     </div>
-  )
+  );
 }
 
 export function AccountTransactions({ address }: { address: PublicKey }) {
-  const query = useGetSignatures({ address })
-  const [showAll, setShowAll] = useState(false)
+  const query = useGetSignatures({ address });
+  const [showAll, setShowAll] = useState(false);
 
   const items = useMemo(() => {
-    if (showAll) return query.data
-    return query.data?.slice(0, 5)
-  }, [query.data, showAll])
+    if (showAll) return query.data;
+    return query.data?.slice(0, 5);
+  }, [query.data, showAll]);
 
   return (
     <div className="space-y-2">
@@ -260,11 +260,11 @@ export function AccountTransactions({ address }: { address: PublicKey }) {
         </div>
       )}
     </div>
-  )
+  );
 }
 
 function BalanceSol({ balance }: { balance: number }) {
-  return <span>{Math.round((balance / LAMPORTS_PER_SOL) * 100000) / 100000}</span>
+  return <span>{Math.round((balance / LAMPORTS_PER_SOL) * 100000) / 100000}</span>;
 }
 
 function ModalReceive({ hide, show, address }: { hide: () => void; show: boolean; address: PublicKey }) {
@@ -273,12 +273,12 @@ function ModalReceive({ hide, show, address }: { hide: () => void; show: boolean
       <p>Receive assets by sending them to your public key:</p>
       <code>{address.toString()}</code>
     </AppModal>
-  )
+  );
 }
 
 function ModalAirdrop({ hide, show, address }: { hide: () => void; show: boolean; address: PublicKey }) {
-  const mutation = useRequestAirdrop({ address })
-  const [amount, setAmount] = useState('2')
+  const mutation = useRequestAirdrop({ address });
+  const [amount, setAmount] = useState('2');
 
   return (
     <AppModal
@@ -300,17 +300,17 @@ function ModalAirdrop({ hide, show, address }: { hide: () => void; show: boolean
         onChange={(e) => setAmount(e.target.value)}
       />
     </AppModal>
-  )
+  );
 }
 
 function ModalSend({ hide, show, address }: { hide: () => void; show: boolean; address: PublicKey }) {
-  const wallet = useWallet()
-  const mutation = useTransferSol({ address })
-  const [destination, setDestination] = useState('')
-  const [amount, setAmount] = useState('1')
+  const wallet = useWallet();
+  const mutation = useTransferSol({ address });
+  const [destination, setDestination] = useState('');
+  const [amount, setAmount] = useState('1');
 
   if (!address || !wallet.sendTransaction) {
-    return <div>Wallet not connected</div>
+    return <div>Wallet not connected</div>;
   }
 
   return (
@@ -326,7 +326,7 @@ function ModalSend({ hide, show, address }: { hide: () => void; show: boolean; a
             destination: new PublicKey(destination),
             amount: parseFloat(amount),
           })
-          .then(() => hide())
+          .then(() => hide());
       }}
     >
       <input
@@ -348,5 +348,5 @@ function ModalSend({ hide, show, address }: { hide: () => void; show: boolean; a
         onChange={(e) => setAmount(e.target.value)}
       />
     </AppModal>
-  )
+  );
 }

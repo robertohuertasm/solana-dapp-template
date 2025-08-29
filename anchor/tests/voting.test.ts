@@ -11,7 +11,7 @@ describe('voting.basic.test', () => {
 
     // NOTE: Anchor will use the wallet as the default signer.
     const payer = provider.wallet;
-    const program = anchor.workspace.Votingapp as Program<Voting>;
+    const program = anchor.workspace.Voting as Program<Voting>;
 
     return { provider, payer, program };
   }

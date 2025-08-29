@@ -1,15 +1,15 @@
-'use client'
+'use client';
 
-import { useConnection } from '@solana/wallet-adapter-react'
-import { IconTrash } from '@tabler/icons-react'
-import { useQuery } from '@tanstack/react-query'
-import { ReactNode, useState } from 'react'
-import { AppModal } from '../ui/ui-layout'
-import { ClusterNetwork, useCluster } from './cluster-data-access'
-import { Connection } from '@solana/web3.js'
+import { useConnection } from '@solana/wallet-adapter-react';
+import { IconTrash } from '@tabler/icons-react';
+import { useQuery } from '@tanstack/react-query';
+import { ReactNode, useState } from 'react';
+import { AppModal } from '../ui/ui-layout';
+import { ClusterNetwork, useCluster } from './cluster-data-access';
+import { Connection } from '@solana/web3.js';
 
 export function ExplorerLink({ path, label, className }: { path: string; label: string; className?: string }) {
-  const { getExplorerUrl } = useCluster()
+  const { getExplorerUrl } = useCluster();
   return (
     <a
       href={getExplorerUrl(path)}
@@ -19,20 +19,20 @@ export function ExplorerLink({ path, label, className }: { path: string; label: 
     >
       {label}
     </a>
-  )
+  );
 }
 
 export function ClusterChecker({ children }: { children: ReactNode }) {
-  const { cluster } = useCluster()
-  const { connection } = useConnection()
+  const { cluster } = useCluster();
+  const { connection } = useConnection();
 
   const query = useQuery({
     queryKey: ['version', { cluster, endpoint: connection.rpcEndpoint }],
     queryFn: () => connection.getVersion(),
     retry: 1,
-  })
+  });
   if (query.isLoading) {
-    return null
+    return null;
   }
   if (query.isError || !query.data) {
     return (
@@ -44,13 +44,13 @@ export function ClusterChecker({ children }: { children: ReactNode }) {
           Refresh
         </button>
       </div>
-    )
+    );
   }
-  return children
+  return children;
 }
 
 export function ClusterUiSelect() {
-  const { clusters, setCluster, cluster } = useCluster()
+  const { clusters, setCluster, cluster } = useCluster();
   return (
     <div className="dropdown dropdown-end">
       <label tabIndex={0} className="btn btn-primary rounded-btn">
@@ -69,14 +69,14 @@ export function ClusterUiSelect() {
         ))}
       </ul>
     </div>
-  )
+  );
 }
 
 export function ClusterUiModal({ hideModal, show }: { hideModal: () => void; show: boolean }) {
-  const { addCluster } = useCluster()
-  const [name, setName] = useState('')
-  const [network, setNetwork] = useState<ClusterNetwork | undefined>()
-  const [endpoint, setEndpoint] = useState('')
+  const { addCluster } = useCluster();
+  const [name, setName] = useState('');
+  const [network, setNetwork] = useState<ClusterNetwork | undefined>();
+  const [endpoint, setEndpoint] = useState('');
 
   return (
     <AppModal
@@ -85,15 +85,15 @@ export function ClusterUiModal({ hideModal, show }: { hideModal: () => void; sho
       show={show}
       submit={() => {
         try {
-          new Connection(endpoint)
+          new Connection(endpoint);
           if (name) {
-            addCluster({ name, network, endpoint })
-            hideModal()
+            addCluster({ name, network, endpoint });
+            hideModal();
           } else {
-            console.log('Invalid cluster name')
+            console.log('Invalid cluster name');
           }
         } catch {
-          console.log('Invalid cluster endpoint')
+          console.log('Invalid cluster endpoint');
         }
       }}
       submitLabel="Save"
@@ -123,11 +123,11 @@ export function ClusterUiModal({ hideModal, show }: { hideModal: () => void; sho
         <option value={ClusterNetwork.Mainnet}>Mainnet</option>
       </select>
     </AppModal>
-  )
+  );
 }
 
 export function ClusterUiTable() {
-  const { clusters, setCluster, deleteCluster } = useCluster()
+  const { clusters, setCluster, deleteCluster } = useCluster();
   return (
     <div className="overflow-x-auto">
       <table className="table border-4 border-separate border-base-300">
@@ -160,8 +160,8 @@ export function ClusterUiTable() {
                   disabled={item?.active}
                   className="btn btn-xs btn-default btn-outline"
                   onClick={() => {
-                    if (!window.confirm('Are you sure?')) return
-                    deleteCluster(item)
+                    if (!window.confirm('Are you sure?')) return;
+                    deleteCluster(item);
                   }}
                 >
                   <IconTrash size={16} />
@@ -172,5 +172,5 @@ export function ClusterUiTable() {
         </tbody>
       </table>
     </div>
-  )
+  );
 }

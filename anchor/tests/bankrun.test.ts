@@ -11,11 +11,7 @@ const PROGRAM_ID = new PublicKey(IDL.address);
 
 describe('voting.bankrun.test', () => {
   async function setup() {
-    const context = await startAnchor(
-      '',
-      [{ name: 'voting', programId: PROGRAM_ID }],
-      [],
-    );
+    const context = await startAnchor('', [{ name: 'voting', programId: PROGRAM_ID }], []);
     const provider = new BankrunProvider(context);
 
     const payer = provider.wallet as anchor.Wallet;

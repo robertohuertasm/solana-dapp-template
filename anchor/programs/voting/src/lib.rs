@@ -3,7 +3,7 @@
 
 use anchor_lang::prelude::*;
 
-declare_id!("5fNNw9P8MT6krt49yN3vgPacpNvUGmmvNgLBPeTe5qeV");
+declare_id!("HnjvW3NVDxwLecreArL8bsoY7GdbQ3R1BkbzXFp9VXB4");
 
 #[program]
 pub mod voting {
