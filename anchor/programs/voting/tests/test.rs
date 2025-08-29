@@ -1,17 +1,19 @@
 use std::vec;
 
-use solana_program::hash::Hash;
+use solana_program::{
+    instruction::{AccountMeta, Instruction},
+    pubkey::Pubkey,
+};
+
 use solana_program_test::{BanksClient, ProgramTest};
 use solana_sdk::{
-    instruction::AccountMeta, pubkey::Pubkey, signature::Keypair, signer::Signer,
+    hash::Hash,
+    signature::{Keypair, Signer},
     transaction::Transaction,
 };
 
-use anchor_lang::prelude::*;
-
+use anchor_lang::prelude::AccountDeserialize;
 use anchor_lang::InstructionData;
-use solana_program_test::*;
-use solana_sdk::instruction::Instruction;
 use voting::{instruction, Candidate, Poll};
 
 // define poll parameters
@@ -21,8 +23,10 @@ const POLL_START: u64 = 1234567890;
 const POLL_END: u64 = POLL_START + 1000000;
 const CANDIDATE_NAME: &str = "Roberto";
 
+const PROGRAM_ID: Pubkey = Pubkey::new_from_array(voting::ID.to_bytes());
+
 async fn setup() -> (BanksClient, Keypair, Hash) {
-    let mut program_test = ProgramTest::new("voting", voting::ID, None);
+    let mut program_test = ProgramTest::new("voting", PROGRAM_ID, None);
     program_test.prefer_bpf(true);
     program_test.start().await
 }
@@ -31,15 +35,15 @@ async fn create_poll(banks: &mut BanksClient, payer: &Keypair, blockhash: Hash) 
     // get the poll PDA
     let poll_id_as_bytes = POLL_ID.to_le_bytes();
     let poll_seeds = &[poll_id_as_bytes.as_ref()];
-    let (poll_address, _bump) = Pubkey::find_program_address(poll_seeds, &voting::ID);
+    let (poll_address, _bump) = Pubkey::find_program_address(poll_seeds, &PROGRAM_ID);
 
     // create the instruction
     let ix = Instruction {
-        program_id: voting::ID,
+        program_id: PROGRAM_ID,
         accounts: vec![
             AccountMeta::new(payer.pubkey(), true),
             AccountMeta::new(poll_address, false),
-            AccountMeta::new_readonly(solana_sdk::system_program::ID, false),
+            AccountMeta::new_readonly(solana_system_program::id(), false),
         ],
         data: instruction::InitializePoll {
             poll_id: POLL_ID,
@@ -68,16 +72,16 @@ async fn create_candidate(
     // get the candidate PDA
     let poll_id_as_bytes = POLL_ID.to_le_bytes();
     let candidate_seeds = &[CANDIDATE_NAME.as_bytes(), poll_id_as_bytes.as_ref()];
-    let (candidate_address, _bump) = Pubkey::find_program_address(candidate_seeds, &voting::ID);
+    let (candidate_address, _bump) = Pubkey::find_program_address(candidate_seeds, &PROGRAM_ID);
 
     // create the instruction
     let ix = Instruction {
-        program_id: voting::ID,
+        program_id: PROGRAM_ID,
         accounts: vec![
             AccountMeta::new(payer.pubkey(), true),
             AccountMeta::new(poll_address, false),
             AccountMeta::new(candidate_address, false),
-            AccountMeta::new_readonly(solana_sdk::system_program::ID, false),
+            AccountMeta::new_readonly(solana_system_program::id(), false),
         ],
         data: instruction::InitializeCandidate {
             candidate_name: CANDIDATE_NAME.to_string(),
@@ -158,7 +162,7 @@ async fn should_vote() {
 
     // instruction
     let ix = Instruction {
-        program_id: voting::ID,
+        program_id: PROGRAM_ID,
         accounts: vec![
             AccountMeta::new(payer.pubkey(), true),
             AccountMeta::new(poll_address, false),
