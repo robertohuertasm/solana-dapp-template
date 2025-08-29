@@ -19,6 +19,7 @@ jobs:
           echo 'export PATH="$HOME/.local/share/solana/install/active_release/bin:$PATH"' >> $GITHUB_PATH
           export PATH="$HOME/.local/share/solana/install/active_release/bin:$PATH"
           solana --version
+          solana-keygen
 
       - name: Generate new keypair
         run: solana-keygen new --no-bip39-passphrase
